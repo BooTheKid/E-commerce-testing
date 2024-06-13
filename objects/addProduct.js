@@ -5,14 +5,13 @@ export class addProduct {
   constructor(page) {
     this.page = page;
 
-    this.addButton = this.page
-      .locator(
-        'button[type="submit"][title="Add to Cart"].action.tocart.primary'
-      )
-      .first();
+    this.addButton = this.page.locator(
+      'button[type="submit"][title="Add to Cart"].action.tocart.primary'
+    );
 
     this.firstColor = this.page.locator("div.swatch-option.color").first();
     this.firstSize = this.page.getByLabel("XS").first();
+    this.image = this.page.locator("img.product-image-photo");
   }
 
   visit = async () => {
@@ -26,8 +25,17 @@ export class addProduct {
     await this.firstColor.waitFor({ state: "visible" });
     await this.firstColor.click();
 
-    await this.addButton.waitFor({ state: "visible" });
-    await this.addButton.click();
+    const addFirstProduct = this.addButton.nth(0);
+
+    await addFirstProduct.click();
+  };
+
+  addToCartSecondProduct = async () => {
+    const imageFive = this.image.nth(4);
+    const addSecondProduct = this.addButton.nth(4);
+
+    await imageFive.hover();
+    await addSecondProduct.click();
   };
   // addProduct = async(index) => {
   //     const addProduct = this.page.locatorawait
