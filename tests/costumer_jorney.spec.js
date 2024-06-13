@@ -10,7 +10,8 @@ test("Add product to the cart", async ({ page }) => {
 
   await homePage.addToCart();
 
-  // check that counter number is more than before
+  await homePage.addToCartSecondProduct();
+
   // delete from cart
   // (check that counter number is less than beffor)
   //add again product
