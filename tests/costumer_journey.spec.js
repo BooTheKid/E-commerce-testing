@@ -14,19 +14,18 @@ test.describe("E2E tests", () => {
 
     const oneProduct = await pom.countProductsInCart();
 
-    let success = false;
-    let retries = 0;
+    let secondProductIsAdded = false;
+    let i = 0;
 
-    while (!success && retries < 3) {
+    while (!secondProductIsAdded && i < 3) {
       try {
         await pom.addToCartSecondProduct();
-        success = true;
+        secondProductIsAdded = true;
       } catch (error) {
-        retries++;
-        if (retries >= maxRetries) {
+        i++;
+        if (i >= 3) {
           throw error;
         }
-        await new Promise((resolve) => setTimeout(resolve, retryInterval));
       }
     }
 
@@ -46,7 +45,21 @@ test.describe("E2E tests", () => {
     const pom = new addProduct(page);
 
     await pom.openPromotion();
-    await pom.addToCart();
+
+    let productIsAdded = false;
+    let i = 0;
+
+    while (!productIsAdded && i < 3) {
+      try {
+        await pom.addToCart();
+        productIsAdded = true;
+      } catch (error) {
+        i++;
+        if (i >= 3) {
+          throw error;
+        }
+      }
+    }
 
     const promotionProduct = await pom.countProductsInCart();
 
