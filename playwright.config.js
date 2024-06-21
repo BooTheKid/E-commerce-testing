@@ -15,6 +15,8 @@ module.exports = defineConfig({
   /* Run tests in files in parallel */
   //globalSetup: require.resolve("./globalSetup.js"),
   fullyParallel: true,
+
+  timeout: 10000,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: false,
   /* Retry on CI only */
@@ -31,7 +33,7 @@ module.exports = defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
     /* Browser options */
-    headless: true,
+    headless: false,
     /* Screenshot options */
     screenshot: "only-on-failure",
   },
