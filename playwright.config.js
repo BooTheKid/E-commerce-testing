@@ -1,6 +1,17 @@
 // @ts-check
 const { defineConfig, devices } = require("@playwright/test");
 
+export default defineConfig({
+  // Folder for test artifacts such as screenshots, videos, traces, etc.
+  outputDir: "test-results",
+
+  // path to the global teardown files.
+  // globalTeardown: require.resolve("./global-teardown"),
+
+  // Each test is given 30 seconds.
+  timeout: 3000,
+});
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv

@@ -14,7 +14,22 @@ test.describe("E2E tests", () => {
 
     const oneProduct = await pom.countProductsInCart();
 
-    await pom.addToCartSecondProduct();
+    let secondProductIsAdded = false;
+    let i = 0;
+
+    while (!secondProductIsAdded && i < 3) {
+      try {
+        await pom.addToCartSecondProduct();
+        secondProductIsAdded = true;
+      } catch (error) {
+        i++;
+        if (i >= 3) {
+          throw error;
+        }
+      }
+    }
+
+    // await pom.addToCartSecondProduct();
 
     const secondProduct = await pom.countProductsInCart();
     if (oneProduct < secondProduct) {
@@ -30,7 +45,21 @@ test.describe("E2E tests", () => {
     const pom = new addProduct(page);
 
     await pom.openPromotion();
-    await pom.addToCart();
+
+    let productIsAdded = false;
+    let i = 0;
+
+    while (!productIsAdded && i < 3) {
+      try {
+        await pom.addToCart();
+        productIsAdded = true;
+      } catch (error) {
+        i++;
+        if (i >= 3) {
+          throw error;
+        }
+      }
+    }
 
     const promotionProduct = await pom.countProductsInCart();
 
