@@ -1,5 +1,19 @@
 // @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+const { defineConfig, devices } = require("@playwright/test");
+
+export default defineConfig({
+  // Folder for test artifacts such as screenshots, videos, traces, etc.
+  outputDir: "test-results",
+
+  // path to the global setup files.
+  // globalSetup: require.resolve("./global-setup"),
+
+  // path to the global teardown files.
+  // globalTeardown: require.resolve("./global-teardown"),
+
+  // Each test is given 30 seconds.
+  timeout: 5000,
+});
 
 /**
  * Read environment variables from file.
@@ -11,7 +25,7 @@ const { defineConfig, devices } = require('@playwright/test');
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   /* Run tests in files in parallel */
   //globalSetup: require.resolve("./globalSetup.js"),
   fullyParallel: true,
@@ -22,22 +36,22 @@ module.exports = defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-     baseURL: 'https://magento.softwaretestingboard.com/',
+    baseURL: "https://magento.softwaretestingboard.com/",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: "on-first-retry",
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { 
-        //...devices['Desktop Chrome'] 
+      name: "chromium",
+      use: {
+        //...devices['Desktop Chrome']
         viewport: null,
       },
     },
@@ -80,4 +94,3 @@ module.exports = defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-
