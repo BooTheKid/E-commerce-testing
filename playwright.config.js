@@ -5,14 +5,11 @@ export default defineConfig({
   // Folder for test artifacts such as screenshots, videos, traces, etc.
   outputDir: "test-results",
 
-  // path to the global setup files.
-  // globalSetup: require.resolve("./global-setup"),
-
   // path to the global teardown files.
   // globalTeardown: require.resolve("./global-teardown"),
 
   // Each test is given 30 seconds.
-  timeout: 5000,
+  timeout: 3000,
 });
 
 /**
@@ -44,6 +41,10 @@ module.exports = defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+    /* Browser options */
+    headless: true,
+    /* Screenshot options */
+    screenshot: "only-on-failure",
   },
 
   /* Configure projects for major browsers */
