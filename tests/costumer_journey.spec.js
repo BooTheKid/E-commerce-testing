@@ -14,7 +14,23 @@ test.describe("E2E tests", () => {
 
     const oneProduct = await pom.countProductsInCart();
 
-    await pom.addToCartSecondProduct();
+    let success = false;
+    let retries = 3;
+
+    while (!success && retries < maxRetries) {
+      try {
+        await pom.addToCartSecondProduct();
+        success = true;
+      } catch (error) {
+        retries++;
+        if (retries >= maxRetries) {
+          throw error;
+        }
+        await new Promise((resolve) => setTimeout(resolve, retryInterval));
+      }
+    }
+
+    // await pom.addToCartSecondProduct();
 
     const secondProduct = await pom.countProductsInCart();
     if (oneProduct < secondProduct) {

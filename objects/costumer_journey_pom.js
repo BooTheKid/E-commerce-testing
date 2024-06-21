@@ -177,6 +177,4 @@ export class addProduct {
       .getByText("Thank you for your purchase!")
       .waitFor("visible");
   };
-
-  validateCount = async () => {};
 }
