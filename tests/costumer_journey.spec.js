@@ -29,8 +29,6 @@ test.describe("E2E tests", () => {
       }
     }
 
-    // await pom.addToCartSecondProduct();
-
     const secondProduct = await pom.countProductsInCart();
     if (oneProduct < secondProduct) {
       console.log(
