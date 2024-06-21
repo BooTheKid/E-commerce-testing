@@ -51,10 +51,8 @@ export class addProduct {
   };
 
   addToCart = async () => {
-    await this.firstSize.waitFor({ state: "visible" });
     await this.firstSize.click();
 
-    await this.firstColor.waitFor({ state: "visible" });
     await this.firstColor.click();
 
     await this.firstSize.hover();
