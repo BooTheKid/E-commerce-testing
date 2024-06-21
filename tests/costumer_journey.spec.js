@@ -15,9 +15,9 @@ test.describe("E2E tests", () => {
     const oneProduct = await pom.countProductsInCart();
 
     let success = false;
-    let retries = 3;
+    let retries = 0;
 
-    while (!success && retries < maxRetries) {
+    while (!success && retries < 3) {
       try {
         await pom.addToCartSecondProduct();
         success = true;
