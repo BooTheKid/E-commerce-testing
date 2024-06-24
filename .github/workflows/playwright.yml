@@ -1,61 +1,72 @@
 name: Playwright Tests
+
 on:
-  push:
-    branches: [main, master]
   pull_request:
     branches: [main, master]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write 
+  schedule:
+    - cron: "55 17 * * *"
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: lts/*
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: zulu
-          java-version: lts/*
+          node-version: "lts/*"
+
       - name: Install dependencies
         run: npm ci
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
       - name: Run Playwright tests
         run: npx playwright test
-      - uses: actions/upload-artifact@v4
-        if: always()
+
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
 
-   - name: Generate Allure report
-        if: always()
-        run: npm run report:generate
-
-      - name: Patch Allure report
-        if: always()
-        run: npm run report:patch
-
-      - name: Setup GitHub Pages
-        if: always()
-        uses: actions/configure-pages@v3
-
-      - name: Upload an artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v2
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
         if: always()
         with:
-          path: ${{ vars.OUTPUT_PATH }}/allure-report
+          ref: gh-pages
+          path: gh-pages
 
-      - name: Deploy to GitHub Pages
+      - name: Copy previous Allure history
         if: always()
-        id: deployment
-        uses: actions/deploy-pages@v2
+        run: |
+          mkdir -p build/allure-results/history
+          cp -r gh-pages/allure-report/history build/allure-results/history || true
+      - name: Generate Allure Report
+        if: always()
+        run: npx allure generate build/allure-results -o allure-report --clean
+
+      - name: Move report to gh-pages
+        if: always()
+        run: |
+          mkdir -p gh-pages/allure-report
+          cp -r allure-report/* gh-pages/allure-report
+      - name: Publish test report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: gh-pages/allure-report
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results
+          path: build/allure-results/
+          retention-days: 30
