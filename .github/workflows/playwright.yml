@@ -4,6 +4,12 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write 
+
 jobs:
   test:
     timeout-minutes: 60
@@ -13,6 +19,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: lts/*
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
@@ -21,38 +32,30 @@ jobs:
         run: npx playwright test
       - uses: actions/upload-artifact@v4
         if: always()
-
-
-          - name: Set up JDK
-        uses: actions/setup-java@v3
         with:
-          distribution: zulu
-          java-version: lts/*
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 
-      - name: Run tests
-        run: ./gradlew clean test
-
-      - name: Load test report history
-        uses: actions/checkout@v4
+   - name: Generate Allure report
         if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+        run: npm run report:generate
 
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
+      - name: Patch Allure report
+        if: always()
+        run: npm run report:patch
+
+      - name: Setup GitHub Pages
+        if: always()
+        uses: actions/configure-pages@v3
+
+      - name: Upload an artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v2
         if: always()
         with:
-          gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: build/allure-results
+          path: ${{ vars.OUTPUT_PATH }}/allure-report
 
-      - name: Publish test report
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to GitHub Pages
         if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_
-          TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+        id: deployment
+        uses: actions/deploy-pages@v2
