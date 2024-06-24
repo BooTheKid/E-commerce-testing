@@ -28,62 +28,58 @@ jobs:
           wget -O allure-2.15.0.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.15.0/allure-commandline-2.15.0.tgz
           tar -zxvf allure-2.15.0.tgz
           sudo mv allure-2.15.0/bin/allure /usr/local/bin
-          allure --version 
+          allure --version
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test --alluredir=allure-results
+        run: npx playwright test --headed --alluredir=allure-results
 
-      - uses: actions/upload-artifact@v4
+      - name: Store Allure results
+        uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: allure-results
+          path: allure-results
           retention-days: 30
-      -name: Store allure results
-       uses: actions/upload-artifact@v3
-       whith:
-       name: allure-results
-       path:
-             allure-results
-       retention-days: 30
-
 
   generate-report:
-   runs-on: ubuntu-latest
-   needs: test
-   name: Generate report
-   steps: 
-        - name: Setup Java
+    runs-on: ubuntu-latest
+    needs: test
+    name: Generate report
+    steps:
+      - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'  
-          java-version: 'latest' 
+          distribution: "adopt"
+          java-version: "latest"
 
-        - name: Install Allure CLI
+      - name: Install Allure CLI
         run: |
           wget -O allure-2.15.0.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.15.0/allure-commandline-2.15.0.tgz
           tar -zxvf allure-2.15.0.tgz
           sudo mv allure-2.15.0/bin/allure /usr/local/bin
-          allure --version  
-        
-        -run: allure generate -c allure-results -o _site
+          allure --version
 
+      - run: allure generate allure-results -o allure-report
 
-    publish-report:
-        runs-on: ubuntu-latest
-        needs: generate-report
-        name: Report publication
-        steps: 
-            -name: Download all workflows run artifacts
-            uses: action/download-artifact@v3
-            -name: Upload Pages artifact
-            uses: action/upload-pages-artifact@2
-            -name: Deploy to GitHub Pages
-            id: deployment
-            uses: actions/deploy-pages@v1.2.9
+  publish-report:
+    runs-on: ubuntu-latest
+    needs: generate-report
+    name: Report publication
+    steps:
+      - name: Download all workflows run artifacts
+        uses: actions/download-artifact@v3
 
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@2
+        with:
+          name: allure-report
+          path: allure-report
 
-
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
