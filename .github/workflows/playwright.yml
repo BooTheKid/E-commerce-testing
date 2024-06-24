@@ -29,6 +29,14 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
 
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
       - name: Upload Allure results
         uses: actions/upload-artifact@v3
         if: always()
