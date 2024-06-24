@@ -21,14 +21,7 @@ jobs:
           node-version: "lts/*"
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Install Allure CLI
-        run: |
-          wget -O allure-2.15.0.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.15.0/allure-commandline-2.15.0.tgz
-          tar -zxvf allure-2.15.0.tgz
-          sudo mv allure-2.15.0/bin/allure /usr/local/bin
-          allure --version
+        run: npm ciß
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
@@ -54,13 +47,6 @@ jobs:
         with:
           distribution: "adopt"
           java-version: "latest"
-
-      - name: Install Allure CLI
-        run: |
-          wget -O allure-2.15.0.tgz https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.15.0/allure-commandline-2.15.0.tgz
-          tar -zxvf allure-2.15.0.tgz
-          sudo mv allure-2.15.0/bin/allure /usr/local/bin
-          allure --version
 
       - run: allure generate allure-results -o allure-report
 
