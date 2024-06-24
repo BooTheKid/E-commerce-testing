@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main, master]
   schedule:
-    - cron: "12 19 * * *"
+    - cron: "*/5 * * * *"
 jobs:
   test:
     timeout-minutes: 60
@@ -21,6 +21,15 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: npx playwright test
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
