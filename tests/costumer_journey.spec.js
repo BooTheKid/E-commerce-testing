@@ -49,6 +49,7 @@ test.describe("E2E tests", () => {
 
     while (!productIsAdded && i < 3) {
       try {
+        await page.reload();
         await pom.addToCart();
         productIsAdded = true;
       } catch (error) {
