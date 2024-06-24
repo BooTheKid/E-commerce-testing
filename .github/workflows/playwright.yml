@@ -26,9 +26,8 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-          #Allure with Git Page report
 
-- name: Set up JDK
+          - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: zulu
@@ -38,7 +37,7 @@ jobs:
         run: ./gradlew clean test
 
       - name: Load test report history
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         if: always()
         continue-on-error: true
         with:
