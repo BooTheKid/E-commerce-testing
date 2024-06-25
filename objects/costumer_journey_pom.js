@@ -62,8 +62,8 @@ export class addProduct {
   };
 
   addToCartSecondProduct = async () => {
-    const imageFive = this.image.nth(5);
-    const addSecondProduct = this.addButton.nth(5);
+    const imageFive = this.image.nth(4);
+    const addSecondProduct = this.addButton.nth(4);
 
     await imageFive.waitFor("visible");
     await imageFive.hover();

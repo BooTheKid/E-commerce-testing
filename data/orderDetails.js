@@ -1,6 +1,6 @@
 export const orderDetails = {
   email: "test@mail.com",
-  firstName: "Jhon",
+  firstName: "Moon",
   lastName: "Snow",
   company: "Faag Corporation",
   street: "Loneroad",
