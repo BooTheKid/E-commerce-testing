@@ -62,10 +62,10 @@ export class addProduct {
   };
 
   addToCartSecondProduct = async () => {
-    const imageFive = this.image.nth(4);
-    const addSecondProduct = this.addButton.nth(4);
+    const imageFive = this.image.nth(5);
+    const addSecondProduct = this.addButton.nth(5);
 
-    await imageFive.waitFor();
+    await imageFive.waitFor("visible");
     await imageFive.hover();
     await addSecondProduct.waitFor();
     await addSecondProduct.click();
