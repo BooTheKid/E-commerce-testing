@@ -65,7 +65,7 @@ export class addProduct {
     const imageFive = this.image.nth(4);
     const addSecondProduct = this.addButton.nth(4);
 
-    await imageFive.waitFor("visible");
+    await imageFive.waitFor();
     await imageFive.hover();
     await addSecondProduct.waitFor();
     await addSecondProduct.click();
