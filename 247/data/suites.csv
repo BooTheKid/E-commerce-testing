@@ -1,0 +1,5 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Dec 17 18:02:34 GMT 2024","Tue Dec 17 18:02:39 GMT 2024","5575","chromium","costumer_journey.spec.js","E2E tests","","","Delete a product from cart",""
+"passed","Tue Dec 17 18:02:39 GMT 2024","Tue Dec 17 18:02:53 GMT 2024","13708","chromium","costumer_journey.spec.js","E2E tests","","","Finish Order",""
+"passed","Tue Dec 17 18:02:29 GMT 2024","Tue Dec 17 18:02:34 GMT 2024","4712","chromium","costumer_journey.spec.js","E2E tests","","","Add a product from promotion section",""
+"broken","Tue Dec 17 18:01:53 GMT 2024","Tue Dec 17 18:02:28 GMT 2024","35202","chromium","costumer_journey.spec.js","E2E tests","","","Add a product to cart",""
